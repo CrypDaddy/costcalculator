@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cost Calculator</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+
+    .calculator-container {
+      max-width: 500px;
+      margin: 50px auto;
+      padding: 30px;
+      background-color: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      text-align: center;
+      font-size: 24px;
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    label {
+      font-size: 16px;
+      color: #555;
+      align-self: center;
+    }
+
+    select, input {
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 16px;
+      width: 100%;
+    }
+
+    .btn {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    button {
+      padding: 14px 28px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 18px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      width: 100%;
+      margin-bottom: 10px; /* To separate buttons */
+    }
+
+    button:hover {
+      background-color: #218838;
+    }
+
+    .result {
+      text-align: center;
+      font-size: 22px;
+      color: #333;
+      margin-top: 30px;
+      font-weight: bold;
+    }
+
+    .terms {
+      font-size: 14px;
+      color: #888;
+      margin-top: 20px;
+      padding-top: 15px;
+      border-top: 1px solid #eee;
+      display: none;
+    }
+
+    .terms.show {
+      display: block;
+    }
+
+    .price {
+      color: #28a745;
+      font-size: 28px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+<div class="calculator-container">
+  <h2>Project Cost Estimate Calculator</h2>
+  <div class="grid">
+    <label for="projectType">Project Type:</label>
+    <select id="projectType">
+      <option value="garageConversion">Garage Conversion</option>
+      <option value="extension">Extension</option>
+      <option value="newBuild">New Build</option>
+    </select>
+
+    <label for="size">Size (sq meters):</label>
+    <input type="number" id="size" placeholder="Enter size">
+  </div>
+  <div class="btn">
+    <button type="button" onclick="calculateCost()">Calculate</button>
+  </div>
+  <div class="result" id="result"></div>
+  
+  <!-- Terms and Conditions Section -->
+  <div class="terms" id="terms">
+    <p><strong>Disclaimer:</strong> The costs provided are estimates based on the size and type of project. Actual prices may vary depending on the specific details and requirements of your project. For an accurate quote, please contact us directly.</p>
+  </div>
+</div>
+
+<script>
+  function calculateCost() {
+    const projectType = document.getElementById('projectType').value;
+    const size = document.getElementById('size').value;
+
+    // Pricing per square meter for each project type
+    let pricePerM2Basic, pricePerM2HighEnd;
+
+    if (projectType === "garageConversion") {
+      pricePerM2Basic = 625;
+      pricePerM2HighEnd = 1250;
+    } else if (projectType === "extension") {
+      pricePerM2Basic = 1800;
+      pricePerM2HighEnd = 3300;
+    } else if (projectType === "newBuild") {
+      pricePerM2Basic = 1500;
+      pricePerM2HighEnd = 2500;
+    }
+
+    if (size <= 0 || !size) {
+      document.getElementById('result').innerText = "Please enter a valid size.";
+      document.getElementById('terms').classList.remove('show');
+      return;
+    }
+
+    // Calculate the cost for both basic and high-end prices
+    const basicCost = pricePerM2Basic * size;
+    const highEndCost = pricePerM2HighEnd * size;
+
+    // Display the result
+    const avgCost = ((basicCost + highEndCost) / 2).toLocaleString();
+    document.getElementById('result').innerHTML = `<p>Your estimated project cost is:</p><p class="price">£${avgCost}</p>`;
+
+    // Show the Terms and Conditions
+    document.getElementById('terms').classList.add('show');
+  }
+</script>
+
+</body>
+</html>
